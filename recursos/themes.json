@@ -1,0 +1,40 @@
+{
+  "dark": {
+    "name": "Modo Oscuro",
+    "description": "Tema oscuro para ambientes con poca luz",
+    "bg_primary": "#1a1a1a",
+    "bg_secondary": "#2b2b2b",
+    "bg_tertiary": "#3d3d3d",
+    "accent": "#00CED1",
+    "accent_hover": "#00B8BA",
+    "accent_disabled": "#006B6D",
+    "text_primary": "#0099B8",
+    "text_secondary": "#CCCCCC",
+    "text_disabled": "#666666",
+    "success": "#00FF7F",
+    "warning": "#FFA500",
+    "error": "#FF4444",
+    "border": "#404040",
+    "console_bg": "#1a1a1a",
+    "console_text": "#0099B8"
+  },
+  "light": {
+    "name": "Modo Claro",
+    "description": "Tema claro para ambientes iluminados",
+    "bg_primary": "#FFFFFF",
+    "bg_secondary": "#F5F5F5",
+    "bg_tertiary": "#E8E8E8",
+    "accent": "#0099CC",
+    "accent_hover": "#007BA3",
+    "accent_disabled": "#CCE5F0",
+    "text_primary": "#0099B8",
+    "text_secondary": "#333333",
+    "text_disabled": "#999999",
+    "success": "#28A745",
+    "warning": "#FFA500",
+    "error": "#DC3545",
+    "border": "#CCCCCC",
+    "console_bg": "#F8F8F8",
+    "console_text": "#0099B8"
+  }
+}

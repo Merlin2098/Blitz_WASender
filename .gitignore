@@ -1,0 +1,29 @@
+# Python: Ignorar entorno virtual y caché
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Archivos generados dinámicamente o localmente
+# Carpetas que se crean durante la ejecución:
+logs/
+perfiles/
+
+# Archivos de Distribución (PyInstaller)
+# La carpeta "onedir" y los archivos de especificación no son necesarios para el código fuente
+onedir/
+*.spec
+
+# Archivos comprimidos y del sistema operativo
+whatsapp.zip
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# NOTAS: Los siguientes archivos NO se ignoran y SÍ se subirán:
+# gui_app.py, todos los demás .py
+# requirements.txt
+# app_icon.ico
+# temas.json (NECESARIO para la app)
+# contactos.xlsx (NECESARIO como plantilla/ejemplo)
+# ------------------------------
