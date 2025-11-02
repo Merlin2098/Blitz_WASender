@@ -1,192 +1,285 @@
-# 🤖 BLITZ-WASENDER: Bot de WhatsApp para Envío Masivo
+# 🧩 Matrix File Processor v2.0
 
-Un bot de escritorio desarrollado en Python, diseñado para automatizar el envío de mensajes masivos y personalizados a través de **WhatsApp Web**. Utiliza **CustomTkinter** para una interfaz de usuario limpia y moderna, y **Excel (.xlsx)** como fuente de datos para los contactos y mensajes.
+> **Aplicación de escritorio para procesamiento masivo de PDFs** - Divide, renombra y organiza documentos de manera automática con interfaz moderna y temas personalizables.
+
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
+
+---
 
 ## 📋 Tabla de Contenidos
 
-- [Características Principales](#-características-principales)
-- [Requisitos del Sistema](#️-requisitos-del-sistema)
-- [Instalación y Uso](#-instalación-y-uso)
-  - [1. Clonar el Repositorio](#1-clonar-el-repositorio)
-  - [2. Crear y Activar Entorno Virtual](#2-crear-y-activar-entorno-virtual)
-  - [3. Instalar Dependencias](#3-instalar-dependencias)
-  - [4. Configuración del Bot](#4-configuración-del-bot)
-  - [5. Ejecutar la Aplicación](#5-ejecutar-la-aplicación)
-  - [6. Crear Ejecutable (Opcional)](#6-crear-ejecutable-opcional)
+- [Características](#-características)
+- [Requisitos](#-requisitos)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Formato del Archivo de Contactos](#-formato-del-archivo-de-contactos)
-- [Solución de Problemas](#-solución-de-problemas)
-- [Logs y Reportes](#-logs-y-reportes)
-- [Advertencias Importantes](#️-advertencias-importantes)
-- [Contribuciones](#-contribuciones)
+- [Generación de Ejecutable](#-generación-de-ejecutable)
+- [Temas Personalizables](#-temas-personalizables)
+- [Optimizaciones](#-optimizaciones)
+- [Contribuir](#-contribuir)
 - [Licencia](#-licencia)
-- [Soporte](#-soporte)
 
-## 🌟 Características Principales
+---
 
-* **Interfaz Gráfica Moderna:** Desarrollado con CustomTkinter para una experiencia de usuario intuitiva y atractiva.
-* **Gestión de Contactos:** Carga la lista de destinatarios directamente desde el archivo `contactos.xlsx`.
-* **Automatización Robusta:** Utiliza **Selenium** y **webdriver-manager** para controlar WhatsApp Web de forma segura y confiable.
-* **Persistencia de Sesión:** Manejo automático de perfiles de navegador para evitar iniciar sesión repetidamente.
-* **Logging Detallado:** Generación automática de archivos de registro (`logs/`) para seguimiento de errores y estado de los envíos.
-* **Soporte de Temas:** Interfaz adaptable con modo claro y oscuro.
-* **Validación de Datos:** Sistema integrado de validación para números telefónicos y estructura de archivos.
+## ✨ Características
 
-## ⚙️ Requisitos del Sistema
+### 📄 Divisor de PDFs
+- Divide archivos PDF grandes en múltiples archivos más pequeños
+- Configuración personalizada de hojas por archivo
+- Validación automática de divisibilidad exacta
 
-* **Python 3.8+**
-* **Navegador Web Compatible:** Google Chrome, Edge o Firefox (se recomienda Chrome)
-* **Sistema Operativo:** Windows, Linux o macOS
+### 🧾 Renombrado Inteligente
+Procesa y renombra automáticamente:
+- **Boletas de Pago**: Extrae nombre, DNI y fecha de ingreso
+- **Certificados AFP**: Identifica titular y DNI del certificado
+- **Quinta Categoría**: Procesa certificados de rentas con paralelización
+- **SUNAT (CIR)**: Renombra documentos ALTA/BAJA con fechas
 
-## 🚀 Instalación y Uso
+### 🛠️ Herramientas Adicionales
+- **Limpiador de Duplicados**: Detecta y elimina archivos duplicados por DNI
+- **Reporte de Errores**: Genera archivos Excel con errores encontrados
+- **Procesamiento Paralelo**: Utiliza ThreadPoolExecutor para máxima velocidad
 
-Sigue estos pasos para poner en marcha el bot.
+### 🎨 Interfaz Moderna
+- Temas claro y oscuro con persistencia
+- Barra de progreso inteligente (actualización cada 2%)
+- Consola en tiempo real (buffer optimizado cada 4s)
+- Métricas en vivo (archivos procesados y tiempo)
+- Sistema de sonidos para feedback
 
-### 1. Clonar el Repositorio
+---
 
-Abre tu terminal y clona el proyecto:
+## 🔧 Requisitos
 
-```bash
-git clone <URL_DE_TU_REPOSITORIO>
-cd BLITZ-WASENDER
+- **Python**: 3.8 o superior
+- **Sistema Operativo**: Windows (optimizado)
+- **Dependencias**: Ver `requirements.txt`
+
+### Bibliotecas Principales
+```
+pdfplumber       # Extracción avanzada de texto desde PDFs
+PyPDF2           # Manipulación de archivos PDF
+openpyxl         # Generación de reportes Excel
+psutil           # Monitoreo de recursos del sistema
+tkinter          # Interfaz gráfica (incluida en Python)
 ```
 
-### 2. Crear y Activar Entorno Virtual
+---
 
+## 📦 Instalación
+
+### 1. Clonar el Repositorio
 ```bash
-python -m venv .venv
+git clone https://github.com/tu-usuario/matrix-file-processor.git
+cd matrix-file-processor
+```
 
-# Para Windows:
-.venv\Scripts\activate
-
-# Para Linux/Mac:
-source .venv/bin/activate
+### 2. Crear Entorno Virtual
+```bash
+python -m venv venv
+venv\Scripts\activate  # Windows
 ```
 
 ### 3. Instalar Dependencias
-
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configuración del Bot
-
-1. **Plantilla de contactos:** Abre el archivo `contactos.xlsx` y rellena los datos de tus destinatarios. Asegúrate de que las columnas coincidan con el formato esperado por el bot (Número de teléfono, Mensaje, etc.).
-
-2. **Archivos de Recursos:** Los archivos de configuración visual (`recursos/themes.json`) y el ícono (`recursos/app_icon.ico`) son esenciales y deben permanecer en la carpeta `recursos/`.
-
-### 5. Ejecutar la Aplicación
-
-Con el entorno virtual activado, inicia la interfaz gráfica:
-
+### 4. Ejecutar la Aplicación
 ```bash
-python gui_app.py
+python main.py
 ```
 
-### 6. Crear Ejecutable (Opcional)
+---
 
-Para distribuir la aplicación sin necesidad de Python:
+## 🚀 Uso
+
+### Modo Interfaz Gráfica
+
+1. **Ejecuta el programa**:
+   ```bash
+   python main.py
+   ```
+
+2. **Dividir PDFs**:
+   - Pestaña "DIVIDIR PDF"
+   - Selecciona archivo PDF
+   - Define hojas por archivo
+   - Presiona "DIVIDIR PDF"
+
+3. **Renombrar Documentos**:
+   - Pestaña "RENOMBRAR"
+   - Selecciona tipo de documento
+   - Elige carpeta o archivo
+   - Presiona "EJECUTAR"
+
+4. **Limpiar Duplicados**:
+   - Pestaña "HERRAMIENTAS"
+   - Selecciona carpeta procesada
+   - Presiona "LIMPIAR DUPLICADOS"
+
+### Modo Consola (Scripts Individuales)
 
 ```bash
-python onedir.py
+# Dividir PDF
+python dividir_pdf.py
+
+# Renombrar boletas
+python boletas.py
+
+# Certificados AFP
+python afp_rename.py
+
+# Quinta categoría
+python quinta_rename.py
+
+# SUNAT
+python sunat.py
+
+# Eliminar duplicados
+python sunat_duplicados.py
 ```
 
-Este script genera un ejecutable empaquetado con PyInstaller.
+---
 
 ## 📁 Estructura del Proyecto
 
 ```
-BLITZ-WASENDER/
-├── .gitignore              # Define archivos y carpetas excluidos del control de versiones
-├── README.md               # Documentación principal del proyecto
-├── requirements.txt        # Dependencias de Python requeridas
-├── contactos.xlsx          # Plantilla de ejemplo para la base de datos de contactos
-├── gui_app.py              # Script principal - Punto de entrada de la aplicación
-├── onedir.py               # Script para crear ejecutable con PyInstaller
+matrix-file-processor/
 │
-├── recursos/               # Recursos estáticos y configuración visual
-│   ├── app_icon.ico        # Ícono de la aplicación
-│   └── themes.json         # Configuración de temas (claro/oscuro)
-│
-└── utils/                  # Módulos de lógica interna y utilidades
-    ├── __init__.py         # Inicializa el paquete utils
-    ├── excel_handler.py    # Gestión de archivos Excel:
-    │                       #   - Lectura y validación de datos
-    │                       #   - Generación de reportes y telemetría
-    │                       #   - Creación de nombres de archivo dinámicos
-    ├── logger.py           # Sistema de logging:
-    │                       #   - Registros únicos por ejecución
-    │                       #   - Timestamp y rutas dinámicas
-    ├── theme_manager.py    # Gestión de temas (claro ↔ oscuro)
-    ├── ui_components.py    # Widgets personalizados adaptables al tema
-    ├── ui_layout.py        # Construcción y organización de la interfaz
-    ├── validators.py       # Validación de rutas, números y estructura Excel
-    └── whatsapp_sender.py  # Automatización de WhatsApp Web:
-                            #   - Control del navegador (Selenium)
-                            #   - Envío de mensajes
-                            #   - Manejo de errores y sincronización
+├── main.py                  # Aplicación principal Tkinter
+├── dividir_pdf.py           # Módulo divisor de PDFs
+├── boletas.py               # Renombrador de boletas
+├── afp_rename.py            # Renombrador certificados AFP
+├── quinta_rename.py         # Renombrador quinta categoría
+├── sunat.py                 # Renombrador SUNAT (CIR)
+├── sunat_duplicados.py      # Limpiador de duplicados
+├── theme_manager.py         # Gestor de temas claro/oscuro
+├── theme_config.json        # Persistencia de preferencias
+├── 1.generar.py             # Generador de ejecutable
+├── requirements.txt         # Dependencias del proyecto
+└── README.md                # Este archivo
 ```
-
-## 📝 Formato del Archivo de Contactos
-
-El archivo `contactos.xlsx` debe contener las siguientes columnas:
-
-| Columna | Descripción | Ejemplo |
-|---------|-------------|---------|
-| Número | Número telefónico con código de país | +51987654321 |
-| Mensaje | Texto del mensaje a enviar | Hola {nombre}, te saluda... |
-| Nombre | Nombre del contacto (opcional para personalización) | Juan Pérez |
-
-## 🔧 Solución de Problemas
-
-### El navegador no abre WhatsApp Web
-- Asegúrate de tener instalado Chrome o el navegador configurado
-- Verifica tu conexión a internet
-- Revisa los logs en la carpeta `logs/`
-
-### Los mensajes no se envían
-- Confirma que has escaneado el código QR en WhatsApp Web
-- Verifica el formato de los números telefónicos en `contactos.xlsx`
-- Asegúrate de que los contactos existan en WhatsApp
-
-### Error al leer el archivo Excel
-- Verifica que `contactos.xlsx` esté cerrado al ejecutar el bot
-- Confirma que las columnas tengan los nombres correctos
-- Revisa que no haya celdas vacías en las columnas obligatorias
-
-## 📊 Logs y Reportes
-
-La aplicación genera automáticamente:
-- **Archivos de log** en `logs/`: Registro detallado de cada ejecución
-- **Reportes de envío**: Estado de cada mensaje (exitoso/fallido)
-- **Telemetría**: Estadísticas de uso y rendimiento
-
-## ⚠️ Advertencias Importantes
-
-1. **Uso Responsable:** Este bot está diseñado para uso legítimo. No lo uses para spam o mensajes no solicitados.
-2. **Límites de WhatsApp:** WhatsApp puede bloquear temporalmente tu cuenta si detecta actividad inusual.
-3. **Respeta la privacidad:** Solo envía mensajes a contactos que hayan dado su consentimiento.
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-1. Haz un fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Añade nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo una licencia de código abierto. Consulta el archivo LICENSE para más detalles.
-
-## 💬 Soporte
-
-Si encuentras algún problema o tienes preguntas:
-- Abre un issue en el repositorio
-- Revisa los logs en la carpeta `logs/`
-- Consulta la documentación de las librerías utilizadas
 
 ---
 
-**Desarrollado con ❤️ para automatizar tu comunicación en WhatsApp**
+## 🏗️ Generación de Ejecutable
+
+El proyecto incluye un script automatizado para generar el ejecutable con **PyInstaller**.
+
+### Pasos para Generar el .exe
+
+1. **Activa el entorno virtual**:
+   ```bash
+   venv\Scripts\activate
+   ```
+
+2. **Ejecuta el generador**:
+   ```bash
+   python 1.generar.py
+   ```
+
+3. **Sigue las instrucciones**:
+   - Valida el entorno virtual
+   - Revisa las librerías instaladas
+   - Confirma la generación
+   - Espera la compilación
+
+4. **Encuentra tu ejecutable**:
+   ```
+   dist/MatrixFileProcessor/MatrixFileProcessor.exe
+   ```
+
+### Características del Ejecutable
+- **Modo OneDiR**: Carpeta con todas las dependencias
+- **Sin consola**: Interfaz limpia sin ventana CMD
+- **Librerías excluidas**: Optimizado (sin pip, setuptools, etc.)
+- **Listo para distribuir**: Solo comparte la carpeta completa
+
+---
+
+## 🎨 Temas Personalizables
+
+El sistema soporta dos temas con persistencia automática:
+
+### Tema Oscuro (Matrix)
+- Fondo negro (#000000)
+- Texto verde Matrix (#00FF00)
+- Estilo hacker/terminal
+
+### Tema Claro (Profesional)
+- Fondo gris claro (#F8FAFC)
+- Texto azul marino (#0F172A)
+- Estilo corporativo moderno
+
+**Cambio de tema**: Botón "🌙/☀️ Cambiar tema" en la esquina superior izquierda
+
+---
+
+## ⚡ Optimizaciones
+
+### Rendimiento
+- **Buffer de Consola**: Actualización cada 4 segundos (reduce redraws)
+- **Barra de Progreso**: Actualización cada 2% (evita saturación)
+- **Procesamiento Paralelo**: ThreadPoolExecutor con 4 workers
+- **Prioridad CPU**: Configurable (NORMAL por defecto)
+
+### Gestión de Recursos
+- Monitoreo de CPU y RAM con `psutil`
+- Límite de 80% CPU / 90% RAM (configurable)
+- Pausa automática si se exceden límites
+
+### Manejo de Errores
+- Sistema de reporte Excel automático
+- Logs detallados con timestamps
+- Recuperación ante fallos individuales
+
+---
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+---
+
+## 📝 Notas Importantes
+
+- Los archivos procesados se renombran **en la misma ubicación** (no se crean copias)
+- Siempre se conserva un backup del nombre original en caso de duplicados
+- Los reportes de errores se generan automáticamente en formato Excel
+- El tema seleccionado se guarda en `theme_config.json`
+
+---
+
+## 🐛 Solución de Problemas
+
+### Error: "No se encontró el archivo PDF"
+- Verifica que la ruta no contenga caracteres especiales
+- Asegúrate de que el archivo exista y sea un PDF válido
+
+### Error: "No se pudo extraer datos"
+- El PDF puede estar escaneado (sin texto extraíble)
+- El formato del documento no coincide con el patrón esperado
+
+### Bajo rendimiento
+- Reduce `max_workers` en los scripts paralelos
+- Cierra otras aplicaciones que consuman recursos
+- Procesa lotes más pequeños de archivos
+
+---
+
+## 📄 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+⭐ **Si este proyecto te fue útil, considera darle una estrella en GitHub**
