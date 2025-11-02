@@ -1,6 +1,5 @@
 # 🤖 BLITZ-WASENDER: Bot de WhatsApp para Envío Masivo
 
-![CustomTkinter GUI Screenshot] 
 Un bot de escritorio desarrollado en Python, diseñado para automatizar el envío de mensajes masivos y personalizados a través de **WhatsApp Web**. Utiliza **CustomTkinter** para una interfaz de usuario limpia y **Excel (.xlsx)** como fuente de datos para los contactos y mensajes.
 
 ## 🌟 Características Principales
@@ -54,28 +53,34 @@ python gui_app.py
 📁 Estructura del Proyecto
 
 BLITZ-WASENDER/
-├── .gitignore          # Archivo crucial para ignorar carpetas y archivos temporales (.venv, logs/, etc.).
-├── README.md           # Documentación principal del proyecto (la carta de presentación).
-├── requirements.txt    # Lista de dependencias de Python para la instalación.
-├── contactos.xlsx      # Plantilla de Excel para la base de datos de envío.
-├── gui_app.py          # Script principal que ejecuta y coordina la Interfaz Gráfica (CustomTkinter).
-├── onedir.py           # Script o utilitario relacionado con el empaquetado/distribución (e.g., PyInstaller).
+├── .gitignore              # Define qué archivos y carpetas deben excluirse del control de versiones (ej. .venv, /logs, etc.)
+├── README.md               # Documentación principal del proyecto (esta guía).
+├── requirements.txt        # Lista de dependencias de Python requeridas para ejecutar la aplicación.
+├── contactos.xlsx          # Plantilla de ejemplo para la base de datos de contactos (archivo Excel).
+├── gui_app.py              # Script principal que ejecuta y coordina la Interfaz Gráfica (basada en CustomTkinter).
+├── onedir.py               # Script auxiliar para empaquetado/distribución (por ejemplo, con PyInstaller).
 │
-├── recursos/           # Carpeta que contiene archivos estáticos necesarios para la GUI.
-│   ├── app_icon.ico    # Ícono de la aplicación.
-│   └── themes.json     # Archivo de configuración visual de CustomTkinter.
+├── recursos/               # Carpeta con archivos estáticos y de configuración visual.
+│   ├── app_icon.ico        # Ícono principal de la aplicación.
+│   └── themes.json         # Configuración de temas (modo claro/oscuro) para CustomTkinter.
 │
-└── utils/              # PAQUETE DE UTILIDADES y LÓGICA DE NEGOCIO
-    ├── __init__.py     # Inicializa el paquete. Contiene módulos para logging, validación, Excel y envío de mensajes.
+└── utils/                  # Paquete con módulos de lógica interna y utilidades.
+    ├── __init__.py             # Inicializa el paquete y permite la importación modular.
     │
-    ├── excel_handler.py    # Módulo para manejo de archivos Excel.
-    │                       # Lógica de lectura, validación, y generación de reportes (con telemetría y naming dinámico).
+    ├── excel_handler.py        # Maneja operaciones con archivos Excel:
+    │                           #   - Lectura y validación de datos
+    │                           #   - Generación de reportes y telemetría
+    │                           #   - Creación de nombres de archivo dinámicos
     │
-    ├── logger.py           # Módulo para gestión de logs.
-    │                       # Crea logs únicos por ejecución con timestamp y soporta rutas dinámicas (desarrollo vs. distribución).
+    ├── logger.py               # Gestión centralizada de logs:
+    │                           #   - Crea registros únicos por ejecución
+    │                           #   - Incluye timestamp y soporte de rutas dinámicas
     │
-    ├── theme_manager.py    # Lógica para el cambio entre tema claro y oscuro de la aplicación.
-    ├── ui_components.py    # Define Widgets personalizados de CustomTkinter que se adaptan al tema.
-    ├── ui_layout.py        # Funciones que construyen y retornan secciones completas de la interfaz.
-    ├── validators.py       # Funciones para la validación de archivos, rutas, números y estructura de Excel.
-    └── whatsapp_sender.py  # Módulo para envío de mensajes por WhatsApp Web. Maneja la lógica de automatización
+    ├── theme_manager.py        # Controla la lógica del cambio de tema (claro ↔ oscuro).
+    ├── ui_components.py        # Define widgets personalizados que se adaptan al tema actual.
+    ├── ui_layout.py            # Construye y organiza las secciones principales de la interfaz gráfica.
+    ├── validators.py           # Funciones para validar rutas, números y estructura de archivos Excel.
+    └── whatsapp_sender.py      # Módulo de automatización de WhatsApp Web:
+                                #   - Control de navegador
+                                #   - Envío de mensajes
+                                #   - Manejo de errores y sincronización
