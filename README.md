@@ -1,6 +1,5 @@
 # 🤖 BLITZ-WASENDER: Bot de WhatsApp para Envío Masivo
 
-![CustomTkinter GUI Screenshot] 
 Un bot de escritorio desarrollado en Python, diseñado para automatizar el envío de mensajes masivos y personalizados a través de **WhatsApp Web**. Utiliza **CustomTkinter** para una interfaz de usuario limpia y **Excel (.xlsx)** como fuente de datos para los contactos y mensajes.
 
 ## 🌟 Características Principales
