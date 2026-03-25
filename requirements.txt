@@ -38,3 +38,18 @@ webdriver-manager
 websocket-client
 wheel
 wsproto
+
+# Added by Tinker installer (missing deps)
+polars
+pyarrow
+fastexcel
+xlsxwriter
+duckdb
+pyside6
+jsonschema
+pydantic
+pyyaml
+hypothesis
+pytest
+pathspec
+pre-commit
