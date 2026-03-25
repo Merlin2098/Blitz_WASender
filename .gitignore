@@ -19,6 +19,10 @@ whatsapp.zip
 .DS_Store
 Thumbs.db
 
+build/
+dist/
+spec/
+
 # ------------------------------
 # NOTAS: Los siguientes archivos NO se ignoran y SÍ se subirán:
 # gui_app.py, todos los demás .py
