@@ -42,6 +42,83 @@ class WhatsAppSender:
         if self.logger:
             self.logger.info("WhatsAppSender inicializado")
             self.logger.info(f"Delay entre mensajes: {delay_min}-{delay_max} segundos")
+
+    def _primer_elemento_disponible(self, localizadores, timeout=20):
+        """
+        Retorna el primer elemento disponible entre varios localizadores.
+        """
+        wait = WebDriverWait(self.driver, timeout)
+
+        def buscar(driver):
+            for by, value in localizadores:
+                elementos = driver.find_elements(by, value)
+                for elemento in elementos:
+                    try:
+                        if elemento.is_displayed():
+                            return elemento
+                    except Exception:
+                        continue
+            return False
+
+        return wait.until(buscar)
+
+    def _elemento_visible_opcional(self, localizadores):
+        """
+        Retorna el primer elemento visible encontrado o None si no existe.
+        """
+        for by, value in localizadores:
+            elementos = self.driver.find_elements(by, value)
+            for elemento in elementos:
+                try:
+                    if elemento.is_displayed():
+                        return elemento
+                except Exception:
+                    continue
+        return None
+
+    def _sesion_activa_locators(self):
+        """
+        Localizadores tolerantes a cambios de DOM para detectar sesión activa.
+        """
+        return [
+            (By.CSS_SELECTOR, "#pane-side"),
+            (By.XPATH, "//input[@data-tab='3' and @role='textbox']"),
+            (By.XPATH, "//input[contains(@aria-label, 'Buscar un chat')]"),
+            (By.XPATH, "//button[@aria-label='Nuevo chat']"),
+            (By.XPATH, "//button[@aria-label='Menú']"),
+            (By.XPATH, "//div[@contenteditable='true'][@data-tab='3']"),
+        ]
+
+    def _chat_abierto_locators(self):
+        """
+        Localizadores para confirmar que un chat individual quedó abierto.
+        """
+        return [
+            (By.CSS_SELECTOR, "#main"),
+            (By.CSS_SELECTOR, "#main header"),
+            (By.CSS_SELECTOR, "#main footer"),
+            (By.XPATH, "//div[@role='textbox' and contains(@aria-label, 'Escribir un mensaje')]"),
+            (By.XPATH, "//button[@aria-label='Enviar' or @aria-label='Send']"),
+        ]
+
+    def _campo_mensaje_locators(self):
+        """
+        Localizadores tolerantes a cambios de DOM para detectar el compositor del mensaje.
+        """
+        return [
+            (By.XPATH, "//div[@role='textbox' and contains(@aria-label, 'Escribir un mensaje')]"),
+            (By.XPATH, "//footer//*[@role='textbox' and @contenteditable='true']"),
+            (By.CSS_SELECTOR, "footer [contenteditable='true'][role='textbox']"),
+            (By.XPATH, "//div[@contenteditable='true'][@data-tab='10']"),
+        ]
+
+    def _boton_enviar_locators(self):
+        """
+        Localizadores para el botón de envío.
+        """
+        return [
+            (By.XPATH, "//button[@aria-label='Enviar' or @aria-label='Send']"),
+        ]
     
     
     def esperar_carga_whatsapp(self, timeout=30):
@@ -57,11 +134,8 @@ class WhatsAppSender:
         try:
             if self.logger:
                 self.logger.info("Esperando carga de WhatsApp Web...")
-            
-            # Esperar a que aparezca el elemento de búsqueda (indica que está logueado)
-            self.wait.until(
-                EC.presence_of_element_located((By.XPATH, "//div[@contenteditable='true'][@data-tab='3']"))
-            )
+
+            self._primer_elemento_disponible(self._sesion_activa_locators(), timeout=timeout)
             
             if self.logger:
                 self.logger.info("✓ WhatsApp Web cargado correctamente")
@@ -70,7 +144,9 @@ class WhatsAppSender:
         except TimeoutException:
             if self.logger:
                 self.logger.error("✗ Timeout: WhatsApp Web no cargó a tiempo")
-                self.logger.error("Verifica que hayas escaneado el código QR")
+                self.logger.error(f"Título detectado: {self.driver.title}")
+                self.logger.error(f"URL detectada: {self.driver.current_url}")
+                self.logger.error("WhatsApp Web puede haber cargado, pero los selectores de sesión no coincidieron")
             return False
         except Exception as e:
             if self.logger:
@@ -133,10 +209,8 @@ class WhatsAppSender:
             except NoSuchElementException:
                 pass  # No hay error, continuar
             
-            # Esperar a que cargue el chat
-            self.wait.until(
-                EC.presence_of_element_located((By.XPATH, "//div[@contenteditable='true'][@data-tab='10']"))
-            )
+            # Esperar a que cargue el chat o el área principal de conversación
+            self._primer_elemento_disponible(self._chat_abierto_locators(), timeout=20)
             
             if self.logger:
                 self.logger.info(f"✓ Chat abierto correctamente")
@@ -162,18 +236,30 @@ class WhatsAppSender:
             bool: True si envió correctamente, False si hubo error
         """
         try:
-            # Buscar el campo de texto del mensaje
-            campo_mensaje = self.wait.until(
-                EC.presence_of_element_located((By.XPATH, "//div[@contenteditable='true'][@data-tab='10']"))
-            )
+            # Buscar el campo de texto del mensaje con selectores más robustos
+            campo_mensaje = self._primer_elemento_disponible(self._campo_mensaje_locators(), timeout=20)
+
+            # Mantener foco explícito en el compositor antes del envío.
+            try:
+                campo_mensaje.click()
+            except Exception:
+                pass
             
             # Presionar Enter para enviar
             campo_mensaje.send_keys(Keys.ENTER)
-            if self.logger:
-                self.logger.info("✓ Mensaje enviado (Enter)")
             
-            # Esperar confirmación (palomita doble)
-            time.sleep(2)
+            # Si el botón de enviar sigue visible, Enter no bastó: usar fallback por click.
+            time.sleep(1)
+            boton_enviar = self._elemento_visible_opcional(self._boton_enviar_locators())
+            if boton_enviar is not None:
+                boton_enviar.click()
+                if self.logger:
+                    self.logger.info("✓ Mensaje enviado (fallback botón Enviar)")
+            else:
+                if self.logger:
+                    self.logger.info("✓ Mensaje enviado (Enter)")
+
+            time.sleep(1)
             
             return True
             
@@ -259,10 +345,9 @@ class WhatsAppSender:
             bool: True si está activa, False si no
         """
         try:
-            # Buscar elemento que solo aparece cuando está logueado
-            self.driver.find_element(By.XPATH, "//div[@contenteditable='true'][@data-tab='3']")
+            self._primer_elemento_disponible(self._sesion_activa_locators(), timeout=5)
             return True
-        except NoSuchElementException:
+        except TimeoutException:
             return False
         except Exception as e:
             if self.logger:

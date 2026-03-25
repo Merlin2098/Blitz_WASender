@@ -1,55 +1,38 @@
-altgraph
-attrs
-certifi
-cffi
-charset-normalizer
+# Core GUI & Data Processing
 customtkinter
 darkdetect
-et_xmlfile
-h11
-idna
-numpy
-openpyxl
-outcome
-packaging
-pandas
-pefile
-psutil
-pycparser
-pyinstaller
-pyinstaller-hooks-contrib
-PySocks
-python-dateutil
-python-dotenv
-pytz
-pywin32-ctypes
-requests
-selenium
-setuptools
-six
-sniffio
-sortedcontainers
-trio
-trio-websocket
-typing_extensions
-tzdata
-urllib3
-webdriver-manager
-websocket-client
-wheel
-wsproto
+pyside6
 
-# Added by Tinker installer (missing deps)
+# Data Processing & Excel
+pandas
+numpy
 polars
 pyarrow
-fastexcel
+openpyxl
 xlsxwriter
+fastexcel
 duckdb
-pyside6
-jsonschema
-pydantic
+
+# Web & API
+requests
+selenium
+webdriver-manager
+
+# Configuration & Validation
+python-dotenv
 pyyaml
-hypothesis
+pydantic
+jsonschema
+
+# Packaging & Deployment
+pyinstaller
+
+# Time & Utilities
+pytz
+psutil
+
+# Development & Testing
 pytest
+hypothesis
 pathspec
 pre-commit
